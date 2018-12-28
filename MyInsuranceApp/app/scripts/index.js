@@ -6,7 +6,7 @@ import { default as Web3 } from 'web3'
 import { default as contract } from 'truffle-contract'
 
 // Import our contract artifacts and turn them into usable abstractions.
-import metaCoinArtifact from '../../build/contracts/Test.json'
+import metaCoinArtifact from '../../build/contracts/Insurance_purchase.json'
 
 // MetaCoin is our usable abstraction, which we'll use through the code below.
 const MetaCoin = contract(metaCoinArtifact)
@@ -84,6 +84,31 @@ const App = {
       self.setStatus('Error sending coin; see log.')
     })
   }
+
+  buyInsurance: function(){
+
+  }
+
+  comfirmHospital: function(){
+
+  }
+
+  createInsurance: function(){
+
+  }
+
+  expiredInsurance:function(){
+
+  }
+
+  getCompensation:function(){
+
+  }
+
+  returnInsurance:function(){
+    
+  }
+
 }
 
 window.App = App
