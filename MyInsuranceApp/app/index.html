@@ -2,31 +2,39 @@
 <html>
 <head>
   <title>My Insurance Purchase Application</title>
-  <link href='./styles/app.css' rel='stylesheet' type='text/css'>
-  <script src="./scripts/app.js"></script>
+  <link lang="scss" href='./styles/app.css' rel='stylesheet/scss' type='text/css'>
+  <script src="./app.js"'></script>
 </head>
 <body>
   <h1>My Insurance Purchase Application</h1>
+  <div id="account">
+    <br><label for="amount" id="current-account">Account ID:</label><input id="account-input" type="text" placeholder="e.g., 1~10" ></input>
+    <button id="send" onclick="App.changeAccount()">Change Account</button>
+    <label for="amount" id="current-account">Current Account:</label><span id="account-address">123...444</span>
+    <span id="status-str">State: </span><span id="status">hhhh</span>
+  </div>
+
   <div id="buyer-can-do">
     <div class="function">Buyer Function</div>
     <div class="buyer">
       <h2>Buy Insurance</h2>
-      <br><label for="amount">Insurance ID:</label><input type="text" id="amount" placeholder="e.g., 1"></input>
+      <br><label for="amount" >Insurance ID:</label><input type="text" id="buy-insurance-id" placeholder="e.g., 1"></input>
       <button id="send" onclick="App.buyInsurance()">Buy Insurance</button>
     </div>
     
     <div class="buyer">
     <h2>Return Insurance</h2>
-    <br><label for="amount">Insurance ID:</label><input type="text" id="amount" placeholder="e.g., 1"></input>
+    <br><label for="amount">Insurance ID:</label><input type="text" id="return-insurance-id" placeholder="e.g., 1"></input>
     <button id="send" onclick="App.returnInsurance()">Return Insurance</button>
     <br>
     </div>
   </div>
+
   <div id="hospital-can-do">
     <div class="function">Hospital Function</div>
     <div class="hospital">
     <h2>Get Compensation</h2>
-      <br><label for="amount">Pacient Address:</label><input type="text" id="amount" placeholder="e.g., 0x4b07...d2db"></input>
+      <br><label for="amount">Pacient Address:</label><input type="text" id="pacient-address" placeholder="e.g., 0x4b07...d2db"></input>
       <button id="send" onclick="App.getCompensation()">Get Compensation</button>
       <br>
     </div>
@@ -36,27 +44,26 @@
     <div class="function">Seller Function</div>
     <div class="seller">
       <h2>Create Insurance</h2>
-      <br><label for="amount">Insurance ID:</label><input type="text" id="amount" placeholder="e.g.,1"></input>
-      <br><label for="amount">Insurance Name:</label><input type="text" id="amount" placeholder="e.g.,0x11"></input>
-      <br><label for="amount">Insurance Price:</label><input type="text" id="amount" placeholder="e.g.,1000"></input>
-      <br><label for="amount">Compensation:</label><input type="text" id="amount" placeholder="e.g.,2000"></input>
+      <br><label for="amount">Insurance ID:</label><input type="text" id="create-insurance-id" placeholder="e.g.,1"></input>
+      <br><label for="amount">Insurance Name:</label><input type="text" id="create-insurance-name" placeholder="e.g.,0x11"></input>
+      <br><label for="amount">Insurance Price:</label><input type="text" id="create-insurance-price" placeholder="e.g.,1000"></input>
+      <br><label for="amount">Compensation:</label><input type="text" id="create-insurance-compensation" placeholder="e.g.,2000"></input>
       <button id="send" onclick="App.createInsurance()">Create Insurance</button>
       <br>
     </div>
     <div class="seller">
       <h2>Expired Insurance</h2>
-      <br><label for="amount">Address:</label><input type="text" id="amount" placeholder="e.g., 0x4b07...d2db"></input>
+      <br><label for="amount">Address:</label><input type="text" id="purchaser-address" placeholder="e.g., 0x4b07...d2db"></input>
       <button id="send" onclick="App.expiredInsurance()">Expired Insurance</button>
     <br>
     </div>
 
     <div class="seller">
       <h2>Comfirm Hospital</h2>
-      <br><label for="amount">Address:</label><input type="text" id="amount" placeholder="e.g., 0x4b07...d2db"></input>
+      <br><label for="amount">Address:</label><input type="text" id="hospital-address" placeholder="e.g., 0x4b07...d2db"></input>
       <button id="send" onclick="App.comfirmHospital()">Comfirm Hospital</button>
       <br>
     </div>
   </div>
-  <span id="status"></span>
 </body>
 </html>

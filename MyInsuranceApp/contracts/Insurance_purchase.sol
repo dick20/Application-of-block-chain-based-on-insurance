@@ -37,26 +37,8 @@ contract Insurance_purchase {
     event Get_compensation();
     event Release_compensation();
     
-    constructor(
-        uint[] memory _insurance_id, 
-        bytes32[] memory _insurance_name, 
-        uint[] memory _purchase_amount, 
-        uint[] memory _compensation
-        ) public payable{
+    constructor() public payable{
         seller = msg.sender;
-        require(_insurance_id.length == _insurance_name.length, "Length must be consistent");
-        require(_purchase_amount.length == _insurance_name.length, "Length must be consistent");
-        require( _purchase_amount.length == _compensation.length, "Length must be consistent");
-        for (uint i = 0; i < _insurance_id.length; i++) {
-            insurances.push(Insurance({
-                insurance_id: _insurance_id[i],
-                insurance_name: _insurance_name[i],
-                purchase_amount: _purchase_amount[i],
-                compensation: _compensation[i]
-            }));
-        }
-        value = msg.value / 2;
-        require((2 * value) == msg.value, "Value has to be even.");
     }
     
      modifier inState(State _state) {
@@ -90,6 +72,11 @@ contract Insurance_purchase {
         );
         _;
     }
+
+    function ComfirmCompany(address payable _address) public{
+        seller = _address;
+    }
+
     
     // 保险公司创建新的保险合约，保险id必须不一致
     function CreateInsurance(uint _insurance_id, bytes32 _insurance_name,

@@ -6,10 +6,10 @@ import { default as Web3 } from 'web3'
 import { default as contract } from 'truffle-contract'
 
 // Import our contract artifacts and turn them into usable abstractions.
-import metaCoinArtifact from '../../build/contracts/Insurance_purchase.json'
+import Insurance_purchaseArtifact from '../../build/contracts/Insurance_purchase.json'
 
-// MetaCoin is our usable abstraction, which we'll use through the code below.
-const MetaCoin = contract(metaCoinArtifact)
+// InsurancePurchase is our usable abstraction, which we'll use through the code below.
+const InsurancePurchase = contract(Insurance_purchaseArtifact)
 
 // The following code is simple to show off interacting with your contracts.
 // As your needs grow you will likely need to change its form and structure.
@@ -21,11 +21,11 @@ const App = {
   start: function () {
     const self = this
 
-    // Bootstrap the MetaCoin abstraction for Use.
-    MetaCoin.setProvider(web3.currentProvider)
+    // Bootstrap the InsurancePurchase abstraction for Use.
+    InsurancePurchase.setProvider(window.web3.currentProvider)
 
     // Get the initial account balance so it can be displayed.
-    web3.eth.getAccounts(function (err, accs) {
+    window.web3.eth.getAccounts(function (err, accs) {
       if (err != null) {
         alert('There was an error fetching your accounts.')
         return
@@ -38,30 +38,28 @@ const App = {
 
       accounts = accs
       account = accounts[0]
+      document.getElementById('account-address').innerHTML = account;
+    })
 
-      self.refreshBalance()
+    console.log(window.web3.isConnected())
+  },
+
+  confirmCompany: function () {
+    const self = this
+
+    let meta
+    InsurancePurchase.deployed().then(function (instance) {
+      meta = instance
+      console.log(meta)
+      meta.ComfirmCompany.call(account[0], {from: account[0], value: 999999999999999999999999999999})
+    }).catch(function (e) {
+      console.log(e)
     })
   },
 
   setStatus: function (message) {
     const status = document.getElementById('status')
     status.innerHTML = message
-  },
-
-  refreshBalance: function () {
-    const self = this
-
-    let meta
-    MetaCoin.deployed().then(function (instance) {
-      meta = instance
-      return meta.getBalance.call(account, { from: account })
-    }).then(function (value) {
-      const balanceElement = document.getElementById('balance')
-      balanceElement.innerHTML = value.valueOf()
-    }).catch(function (e) {
-      console.log(e)
-      self.setStatus('Error getting balance; see log.')
-    })
   },
 
   sendCoin: function () {
@@ -73,7 +71,7 @@ const App = {
     this.setStatus('Initiating transaction... (please wait)')
 
     let meta
-    MetaCoin.deployed().then(function (instance) {
+    InsurancePurchase.deployed().then(function (instance) {
       meta = instance
       return meta.sendCoin(receiver, amount, { from: account })
     }).then(function () {
@@ -83,30 +81,132 @@ const App = {
       console.log(e)
       self.setStatus('Error sending coin; see log.')
     })
-  }
+  },
+
+  changeAccount: function (){
+    const self = this
+
+    const account_id = parseInt(document.getElementById('account-input').value)
+    if (account_id < 10 && account_id > 0) 
+    {
+      account = accounts[account_id]
+      document.getElementById('account-address').innerHTML = account;
+    }
+    else{
+      document.getElementById('account-address').innerHTML = "no such an account!";
+    }
+    console.log('changeAccount')
+  },
 
   buyInsurance: function(){
+    const self = this
 
-  }
+    const insurance_id = parseInt(document.getElementById('buy-insurance-id').value)
+
+    let meta
+    InsurancePurchase.deployed().then(function (instance) {
+      meta = instance
+      console.log('BuyInsurance')
+      return meta.BuyInsurance(insurance_id)
+    }).then(function () {
+      self.setStatus('You have purchased the No.'+ insurance_id + ' insurance!')
+    }).catch(function (e) {
+      console.log(e)
+      self.setStatus('Error sending coin; see log.')
+    })
+  },
 
   comfirmHospital: function(){
+    const self = this
 
-  }
+    const hospital_address = document.getElementById('hospital-address').value
+
+    let meta
+    InsurancePurchase.deployed().then(function (instance) {
+      meta = instance
+      console.log('comfirmHospital')
+      return meta.BuyInsurance(hospital_address)
+    }).then(function () {
+      self.setStatus('You have comfirm the '+ hospital_address + ' hospital!')
+    }).catch(function (e) {
+      console.log(e)
+      self.setStatus('Error sending coin; see log.')
+    })
+  },
 
   createInsurance: function(){
+    const self = this
 
-  }
+    const insurance_id = parseInt(document.getElementById('create-insurance-id').value)
+    const insurance_name = document.getElementById('create-insurance-name').value
+    const insurance_price = parseInt(document.getElementById('create-insurance-price').value)
+    const insurance_compensation = parseInt(document.getElementById('create-insurance-compensation').value)
+
+    let meta
+    InsurancePurchase.deployed().then(function (instance) {
+      meta = instance
+      console.log('createInsurance')
+      return meta.CreateInsurance(insurance_id,insurance_name,insurance_price,insurance_compensation)
+    }).then(function () {
+      self.setStatus('You have purchased the No.'+ insurance_id + ' insurance!')
+    }).catch(function (e) {
+      console.log(e)
+      self.setStatus('Error sending coin; see log.')
+    })
+  },
 
   expiredInsurance:function(){
+    const self = this
 
-  }
+    const purchaser_address = document.getElementById('purchaser-address').value
+
+    let meta
+    InsurancePurchase.deployed().then(function (instance) {
+      meta = instance
+      console.log('expiredInsurance')
+      return meta.ExpiredInsurance(purchaser_address)
+    }).then(function () {
+      self.setStatus('The insurance of' + purchaser_address +' has expired!')
+    }).catch(function (e) {
+      console.log(e)
+      self.setStatus('Error sending coin; see log.')
+    })
+  },
 
   getCompensation:function(){
+    const self = this
 
-  }
+    const pacient_address = document.getElementById('pacient-address').value
+
+    let meta
+    InsurancePurchase.deployed().then(function (instance) {
+      meta = instance
+      console.log('getCompensation')
+      return meta.GetCompensation(pacient_address)
+    }).then(function () {
+      self.setStatus('The ' +hospital_address +' pacient have got the compensation!')
+    }).catch(function (e) {
+      console.log(e)
+      self.setStatus('Error sending coin; see log.')
+    })
+  },
 
   returnInsurance:function(){
-    
+    const self = this
+
+    const insurance_id = parseInt(document.getElementById('return-insurance-id').value)
+
+    let meta
+    InsurancePurchase.deployed().then(function (instance) {
+      meta = instance
+      console.log('returnInsurance')
+      return meta.ReturnInsurance(insurance_id)
+    }).then(function () {
+      self.setStatus('You have returned the No.'+ insurance_id + ' insurance!')
+    }).catch(function (e) {
+      console.log(e)
+      self.setStatus('Error sending coin; see log.')
+    })
   }
 
 }
@@ -114,28 +214,8 @@ const App = {
 window.App = App
 
 window.addEventListener('load', function () {
-  // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-  if (typeof web3 !== 'undefined') {
-    console.warn(
-      'Using web3 detected from external source.' +
-      ' If you find that your accounts don\'t appear or you have 0 MetaCoin,' +
-      ' ensure you\'ve configured that source properly.' +
-      ' If using MetaMask, see the following link.' +
-      ' Feel free to delete this warning. :)' +
-      ' http://truffleframework.com/tutorials/truffle-and-metamask'
-    )
-    // Use Mist/MetaMask's provider
-    window.web3 = new Web3(web3.currentProvider)
-  } else {
-    console.warn(
-      'No web3 detected. Falling back to http://127.0.0.1:8545.' +
-      ' You should remove this fallback when you deploy live, as it\'s inherently insecure.' +
-      ' Consider switching to Metamask for development.' +
-      ' More info here: http://truffleframework.com/tutorials/truffle-and-metamask'
-    )
-    // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-    window.web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8545'))
-  }
-
+  window.web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8545'))
+  console.log(window.web3.isConnected())
   App.start()
+  console.log(window.web3.isConnected())
 })
