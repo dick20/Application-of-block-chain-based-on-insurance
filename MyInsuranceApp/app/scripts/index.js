@@ -23,7 +23,6 @@ const App = {
 
     // Bootstrap the InsurancePurchase abstraction for Use.
     InsurancePurchase.setProvider(window.web3.currentProvider)
-
     // Get the initial account balance so it can be displayed.
     window.web3.eth.getAccounts(function (err, accs) {
       if (err != null) {
@@ -62,32 +61,11 @@ const App = {
     status.innerHTML = message
   },
 
-  sendCoin: function () {
-    const self = this
-
-    const amount = parseInt(document.getElementById('amount').value)
-    const receiver = document.getElementById('receiver').value
-
-    this.setStatus('Initiating transaction... (please wait)')
-
-    let meta
-    InsurancePurchase.deployed().then(function (instance) {
-      meta = instance
-      return meta.sendCoin(receiver, amount, { from: account })
-    }).then(function () {
-      self.setStatus('Transaction complete!')
-      self.refreshBalance()
-    }).catch(function (e) {
-      console.log(e)
-      self.setStatus('Error sending coin; see log.')
-    })
-  },
-
   changeAccount: function (){
     const self = this
 
     const account_id = parseInt(document.getElementById('account-input').value)
-    if (account_id < 10 && account_id > 0) 
+    if (account_id < 10 && account_id >= 0) 
     {
       account = accounts[account_id]
       document.getElementById('account-address').innerHTML = account;
@@ -100,10 +78,9 @@ const App = {
 
   buyInsurance: function(){
     const self = this
-
     const insurance_id = parseInt(document.getElementById('buy-insurance-id').value)
-
     let meta
+
     InsurancePurchase.deployed().then(function (instance) {
       meta = instance
       console.log('BuyInsurance')
@@ -112,7 +89,7 @@ const App = {
       self.setStatus('You have purchased the No.'+ insurance_id + ' insurance!')
     }).catch(function (e) {
       console.log(e)
-      self.setStatus('Error sending coin; see log.')
+      self.setStatus('Error; see log.')
     })
   },
 
@@ -130,7 +107,7 @@ const App = {
       self.setStatus('You have comfirm the '+ hospital_address + ' hospital!')
     }).catch(function (e) {
       console.log(e)
-      self.setStatus('Error sending coin; see log.')
+      self.setStatus('Error; see log.')
     })
   },
 
@@ -148,10 +125,10 @@ const App = {
       console.log('createInsurance')
       return meta.CreateInsurance(insurance_id,insurance_name,insurance_price,insurance_compensation)
     }).then(function () {
-      self.setStatus('You have purchased the No.'+ insurance_id + ' insurance!')
+      self.setStatus('You have created the No.'+ insurance_id + ' insurance!')
     }).catch(function (e) {
       console.log(e)
-      self.setStatus('Error sending coin; see log.')
+      self.setStatus('Error; see log.')
     })
   },
 
@@ -169,7 +146,7 @@ const App = {
       self.setStatus('The insurance of' + purchaser_address +' has expired!')
     }).catch(function (e) {
       console.log(e)
-      self.setStatus('Error sending coin; see log.')
+      self.setStatus('Error; see log.')
     })
   },
 
@@ -187,7 +164,7 @@ const App = {
       self.setStatus('The ' +hospital_address +' pacient have got the compensation!')
     }).catch(function (e) {
       console.log(e)
-      self.setStatus('Error sending coin; see log.')
+      self.setStatus('Error; see log.')
     })
   },
 
@@ -205,7 +182,7 @@ const App = {
       self.setStatus('You have returned the No.'+ insurance_id + ' insurance!')
     }).catch(function (e) {
       console.log(e)
-      self.setStatus('Error sending coin; see log.')
+      self.setStatus('Error; see log.')
     })
   }
 
@@ -215,7 +192,6 @@ window.App = App
 
 window.addEventListener('load', function () {
   window.web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8545'))
-  console.log(window.web3.isConnected())
   App.start()
   console.log(window.web3.isConnected())
 })
